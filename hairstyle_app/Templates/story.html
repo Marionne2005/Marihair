@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Story</title>
+      <link rel="stylesheet" href="{% static 'style.css'%}">
+     <link rel="stylesheet" href="{% static 'style_2.css'%}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Forum&family=Italianno&family=Open+Sans&family=Tangerine&family=Playfair+Display&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mea+Culpa&display=swap" rel="stylesheet">
+    <style>
+       .fade-out {
+         opacity: 0;
+         transition: opacity 0.5s ease;
+       }
+    </style>
+</head>
+<body>
+   <nav class="menu">
+             <a href="{% url 'home' %}">Home </a>
+              <a href="{% url 'servapp' %}"> Services</a>
+              <a href="{% url 'storyapp' %}">Our story</a>
+              <a href="{% url 'reservation' %}">Contact us</a>
+              <a href="{% url 'servapp' %}" class="button_nav" style="color:black;">BOOK NOW</a>
+   </nav>
+    <h1 class="services.title">Our story</h1>
+    <section class="our_story">
+      <p>
+       It all started in Cotonou, Benin, under the warm hands and kind heart of <strong>Maman Iman</strong>.
+       She wasn't just a hairstylist she was an artist. Watching her braid with such care, love, and precision sparked something in me.
+       Day after day, I stood beside her, learning, observing, and slowly falling in love with the magic of hair braiding.
+     </p>
+     <p>
+       Soon, I began practicing on my own. My friends became my canvas.
+       I braided their hair for free not for money, but for the joy of learning and growing.
+       I asked questions, sought feedback, and welcomed every piece of advice from experienced hairstylists around me.
+     </p>
+     <p>
+      Through the ups and downs, my family was always there.
+      They carried me with their encouragement, showed up for every small milestone, and reminded me that my passion had a purpose.
+    </p>
+    <p>
+       And so, <strong>Marihair</strong> was born not just a brand, but a dream woven from patience, practice, community, and love.
+       Every braid tells a story, and mine began with gratitude and a deep passion for making people feel confident and seen.</p>
+
+   </section>
+   <footer>
+      <div class="form-bloc">
+          <div class="form-item">
+              <h3>ADDRESS</h3>
+              <p>Mon adresse</p>
+          </div>
+          <div class="form-item">
+              <h3>CONTACT</h3>
+              <p>Tel: +1(613)276-7337</p>
+              <p>Email: info@mysite.com</p>
+          </div>
+          <div class="form-item">
+              <h3>OPENING HOURS</h3>
+              <p>Mon-Thu: 9am-8pm</p>
+              <p>Fri:9am-8pm</p>
+          </div>
+          <div class="form-item">
+              <h3>STAY UPDATED</h3>
+              <form action="{% url 'home' %}" method="POST">
+                  {% csrf_token %}
+                  <input type="text" placeholder="Your email" pattern=".+@.+\..+" title="Enter a valid email" name="mail" required>
+                  <button type="submit">Send</button>
+              </form>
+          </div>
+      </div>
+    </footer>
+
+  <script src="{% static 'javas.js'  %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Services</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+    <link rel="stylesheet" href="{% static 'style_1.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Forum&family=Italianno&family=Open+Sans&family=Tangerine&family=Playfair+Display&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mea+Culpa&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+       .fade-out {
+         opacity: 0;
+         transition: opacity 0.5s ease;
+       }
+    </style>
+
+</head>
+<body>
+          <nav class="menu">
+              <a href="{% url 'home' %}">Home </a>
+              <a href="{% url 'servapp' %}"> Services</a>
+              <a href="{% url 'storyapp' %}">Our story</a>
+              <a href="{% url 'reservation' %}">Contact us</a>
+              <a href="{% url 'servapp' %}" class="button_nav" style="color:black;">BOOK NOW</a>
+          </nav>
+    <h1> SERVICES</h1>
+ <div class="services-container">
+  <div class="service">
+    <span class="prestation">Cornrows simples</span>
+    <span class="prix">30$-40$</span>
+    <a href="#" onclick="openBooking('Cornrows simples', '30$-40$')" id="book_1" class="book-btn">Book Now</a>
+
+  </div>
+
+  <div class="service">
+    <span class="prestation">Cornrows avec extensions</span>
+    <span class="prix">60$-80$</span>
+    <a href="#" onclick="openBooking('Cornrows with extensions', '60$-80$')" id="book_2" class="book-btn">Book Now</a>
+
+  </div>
+
+  <div class="service">
+    <span class="prestation">Braids simples</span>
+    <span class="prix">50$</span>
+    <a href="#" onclick="openBooking('Braids simples', '50$')" id="book_3" class="book-btn">Book Now</a>
+  </div>
+
+  <div class="service">
+    <span class="prestation" >Braids with extensions</span>
+    <span class="prix">70$-150$</span>
+    <a href="#" onclick="openBooking('Braids with extensions', '70$-150$')" id="book_4" class="book-btn">Book Now</a>
+  </div>
+
+  <div class="service">
+    <span class="prestation" >Passion Twists</span>
+    <span class="prix">100$-130$</span>
+    <a href="#" onclick="openBooking('Passion Twists', '100$-130$')" id="book_5" class="book-btn">Book Now</a>
+  </div>
+
+  <div class="service">
+    <span class="prestation" >Fulani braids</span>
+    <span class="prix">90$-120$</span>
+    <a href="#" onclick="openBooking('Fulani braids', '90$-120$')" id="book_6" class="book-btn">Book Now</a>
+  </div>
+
+  <div class="service">
+    <span class="prestation" >Goddess braids</span>
+    <span class="prix">80$-100$</span>
+    <a href="#" onclick="openBooking('Goddess braids', '80$-100$')" id="book_7" class="book-btn">Book Now</a>
+  </div>
+ </div>
+   <button type="button" id="click" onclick="myfunction()">ADD NEW SERVICE</button>
+<! New service formulaire !>
+    <div id="newService" class="unitService" style="display:none;">
+       <span onclick="openWarning()" class="warnOpen">&times;</span>
+       <p id="introductionSen">Can’t find what you’re looking for? <br>
+             Let us know what style you have in mind!</p>
+     <form action="{% url 'service' %}" id="customServiceForm" method="POST" enctype="multipart/form-data">
+         {% csrf_token %}
+         <div class="unitService_1" style="display:flex;">
+       <span><input type="text" placeholder="First Name" id="firstName" title="Please enter your first name" name="firstName" required></span>
+       <span><input type="text" placeholder="Last Name" id="lastName" title="Please enter your last name" name="lastName" required></span>
+       <span><input type="email" placeholder="Your email" pattern=".+@.+\..+" title="Enter a valid email like example@mysite.com." id="email" name="email" required></span>
+
+       <span>
+         <input type="tel" id="phone" placeholder="Phone" name="phone" required>
+       </span>
+
+        <span>
+          <label for="hairPicture" >Upload a picture </label>
+          <input type="file" id="hairPicture" accept="image/*"  name="picture" required>
+        </span>
+    </div>
+         <button type="submit" class="informationButton" id="customButton">Schedule Appointment</button>
+     </form>
+    </div>
+    <div id="bookingModal" class="modal" style="display:none">
+      <div class="modal-content">
+        <h2 id="ti_1">Appointment Summary </h2>
+          <div class="rectangle">
+             <span onclick="openWarning()" class="warnOpen">&times;</span>
+             <p id="serviceName"></p>
+              <p>Canada</p>
+             <p id="priceService"></p>
+          </div>
+
+      </div>
+
+           <a href="#" class="aptnButton" onclick="openAppointment()">Schedule Appointment</a>
+
+
+    </div>
+
+      <div id="warningWindow" class="modal_1" style="display:none;">
+        <span onclick="closeWarn()" class="closeWindow">&times;</span>
+        <h2 id="ti_2">Leave without booking?</h2>
+        <p>If you leave now, your appointment won’t be saved.</p>
+        <div class="butClose">
+          <span  onclick="closeBooking()" id="closing">Leave Booking</span>
+           <span  onclick="continueBooking()" id="continue">Continue Booking</span>
+        </div>
+      </div>
+
+    <div style="display:none;" class="confirmContainer" id="confirmContainer">
+      <form id="reservationForm" action="{% url 'back-end' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token%}
+        <span onclick="closeConfirm()" class="closeWindow">&times;</span>
+         <h2>Appointment</h2>
+         <div class="unitContainer" style="display:flex;">
+         <span><input type="text" placeholder="First Name" id="first_Name" title="Please enter your first name" name="nom_client" required></span>
+         <span><input type="text" placeholder="Last Name" id="last_Name" title="Please enter your last name" name="nom_famille" required></span>
+         <span><input type="email" placeholder="Your email" pattern=".+@.+\..+" title="Enter a valid email like example@mysite.com." id="em_ail" name="email" required> </span>
+         <span><input type="date" placeholder="Desired date for the appointment" name="date"></span>
+         <span>
+            <input type="tel" id="pho_ne" placeholder="Phone" name="num_phone" required>
+         </span>
+         </div>
+         <input type="hidden" id="hidden_service" name="service_choice">
+         <input type="hidden" id="hidden_price" name="price">
+        <span id="service_choice"> </span>
+        <span id="price"> </span>
+        <button type="submit" name="confirmButton" class="informationButton" >BOOK</button>
+      </form>
+    </div>
+
+  <div style="display:none;" class="pageContainer" id="pageContainer">
+      <span onclick="closePage()" class="closeWindow">&times;</span>
+      <p>Your appointment has been confirm!!</p>
+  </div>
+  <footer>
+      <div class="form-bloc">
+          <div class="form-item">
+              <h3>ADDRESS</h3>
+              <p>Mon adresse</p>
+          </div>
+          <div class="form-item">
+              <h3>CONTACT</h3>
+              <p>Tel: +1(613)276-7337</p>
+              <p>Email: info@mysite.com</p>
+          </div>
+          <div class="form-item">
+              <h3>OPENING HOURS</h3>
+              <p>Mon-Thu: 9am-8pm</p>
+              <p>Fri:9am-8pm</p>
+          </div>
+          <div class="form-item">
+              <h3>STAY UPDATED</h3>
+              <form action="{% url 'home' %}" method="POST">
+                  {% csrf_token %}
+                  <input type="text" placeholder="Your email" pattern=".+@.+\..+" title="Enter a valid email" name="mail" required>
+                  <button type="submit">Send</button>
+              </form>
+          </div>
+      </div>
+    </footer>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
+  <script>
+   const input = document.querySelector("#phone");
+   window.intlTelInput(input, {
+    loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js"),
+    });
+   const input_1 = document.querySelector("#pho_ne");
+   window.intlTelInput(input_1, {
+    loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js"),
+    });
+  </script>
+
+  <script src="{% static 'javas.js'  %}"></script>
+</body>
+</html>
