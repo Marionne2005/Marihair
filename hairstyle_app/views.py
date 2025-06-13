@@ -41,29 +41,49 @@ def reservation_us(request):
     return render(request,'reservation.html')
 
 def add_new_service(request):
-   if request.method=="POST":
-       form=DemandePersoForm(request.POST, request.FILES)
-       if form.is_valid():
-           form.save()
-           send_mail(
-               'Confirmation de votre demande',
-               f"Merci {form.cleaned_data['first_name']} {form.cleaned_data['last_name']},\n\nNous avons bien reçu votre demande. Merci de nous avoir contactés ! Nous reviendrons vers vous très prochainement pour discuter des détails et confirmer la suite.\n\nAu plaisir de vous servir,\nL’équipe de Marihair",
-                settings.DEFAULT_FROM_EMAIL,
-               [form.cleaned_data['email']]
-           )
+    if request.method == "POST":
+        form = DemandePersoForm(request.POST, request.FILES)
+        print(request.POST)
+        if form.is_valid():
+            try:
+                # Sauvegarde du formulaire
+                form.save()
+                instance=form.instance
+                image_url=request.build_absolute_uri(instance.picture.url)
 
-           send_mail(
-               'Nouvelle demande personnalisée reçue',
-               f"Nouvelle demande personnalisée de {form.cleaned_data['first_name']} {form.cleaned_data['last_name']}\n"
-               f"Téléphone : {form.cleaned_data['phone']}\n"
-               f"Email : {form.cleaned_data['email']}",
-               settings.DEFAULT_FROM_EMAIL,
-               ['marionnegannavi@gmail.com']
-           )
-       return render(request,'services.html')
-   else:
-       form = DemandePersoForm()
-   return render(request, 'services.html', {'form': form})
+                # Email de confirmation au client
+                send_mail(
+                    'Confirmation de votre demande',
+                    f"Merci {form.cleaned_data['first_name']} {form.cleaned_data['last_name']},\n\n"
+                    f"Nous avons bien reçu votre demande. Merci de nous avoir contactés ! "
+                    f"Nous reviendrons vers vous très prochainement pour discuter des détails.\n\n"
+                    f"Au plaisir de vous servir,\nL’équipe de Marihair",
+                    settings.DEFAULT_FROM_EMAIL,
+                    [form.cleaned_data['email']]
+                )
+
+                send_mail(
+                    'Nouvelle demande personnalisée reçue',
+                    f"Nouvelle demande personnalisée de {form.cleaned_data['first_name']} {form.cleaned_data['last_name']}\n"
+                    f"Téléphone : {form.cleaned_data['phone']}\n"
+                    f"Email : {form.cleaned_data['email']}\n"
+                    f"Photo : {image_url}",
+                    settings.DEFAULT_FROM_EMAIL,
+                    ['marionnegannavi@gmail.com']
+                )
+
+            except BadHeaderError:
+                return HttpResponse('En-tête de mail invalide.')
+            except Exception as e:
+                return HttpResponse(f"Erreur lors de l'envoi de l'email : {str(e)}")
+
+        else:
+            print(form.errors)
+
+        return render(request, 'services.html')
+    else:
+        form = DemandePersoForm()
+    return render(request, 'services.html',{'form':form})
 
 def reserver_service(request):
     if request.method == 'POST':

@@ -231,7 +231,7 @@ body{
    font-size:15px;
 }
 
-.button_nav: hover{
+.button_nav:hover{
   border:1px solid #CB8A76;
-  background-color:#CB8A76;
+  color:#CB8A76;
 }

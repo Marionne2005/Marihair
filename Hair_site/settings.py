@@ -133,6 +133,11 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'marionnegannavi@gmail.com'
 EMAIL_HOST_PASSWORD = 'nijr huuv lnbi bqki'  # sans espaces
 DEFAULT_FROM_EMAIL = 'Marihair <marionnegannavi@gmail.com>'
+EMAIL_TIMEOUT = 10
+
+# Media files (uploads des images des clients)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # OU pour développement console :
 

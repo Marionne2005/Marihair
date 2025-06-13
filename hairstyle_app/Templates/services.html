@@ -83,8 +83,8 @@
      <form action="{% url 'service' %}" id="customServiceForm" method="POST" enctype="multipart/form-data">
          {% csrf_token %}
          <div class="unitService_1" style="display:flex;">
-       <span><input type="text" placeholder="First Name" id="firstName" title="Please enter your first name" name="firstName" required></span>
-       <span><input type="text" placeholder="Last Name" id="lastName" title="Please enter your last name" name="lastName" required></span>
+       <span><input type="text" placeholder="First Name" id="firstName" title="Please enter your first name" name="first_name" required></span>
+       <span><input type="text" placeholder="Last Name" id="lastName" title="Please enter your last name" name="last_name" required></span>
        <span><input type="email" placeholder="Your email" pattern=".+@.+\..+" title="Enter a valid email like example@mysite.com." id="email" name="email" required></span>
 
        <span>
